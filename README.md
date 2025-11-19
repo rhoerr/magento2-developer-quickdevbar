@@ -112,7 +112,7 @@ php bin/magento dev:quickdevbar:enable
 ```
 and activate full sql backtrace 
 ```
-php bin/magento dev:quickdevbar:enable --sql-qdb-profiler
+php bin/magento dev:quickdevbar:enable --sql-profiler
 ```
 
 Or via the standard configuration in the Advanced/Developer/Quick dev bar section.
