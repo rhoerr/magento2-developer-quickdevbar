@@ -17,10 +17,10 @@
 <tbody>
     <?php foreach ($block->getCacheEvents() as $identifier=>$events): ?>
       <tr>
-          <td><?=  $identifier; ?></td>
-          <td><?=  $events['save']; ?></td>
-        <td><?=  $events['load']; ?></td>
-        <td><?=  $events['remove']; ?></td>
+          <td><?= $block->escapeHtml($identifier); ?></td>
+          <td><?= (int)$events['save']; ?></td>
+        <td><?= (int)$events['load']; ?></td>
+        <td><?= (int)$events['remove']; ?></td>
       </tr>
     <?php endforeach ?>
 </tbody>

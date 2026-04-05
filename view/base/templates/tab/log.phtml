@@ -23,7 +23,7 @@
         let target =  'content-' +  key ;
         let params = new URLSearchParams({isAjax:1,log_key:key});
         window.quickDevBar.qdbFetchPromise('quickdevbar/log/reset/?' + params.toString()).then(html => {
-            document.getElementById(target).innerHTML = html;
+            document.getElementById(target).textContent = html;
         });
     };
 
@@ -32,7 +32,7 @@
         let target =  'content-' +  key ;
         let params = new URLSearchParams({isAjax:1,log_key:key,tail:<?=  $block->getTailLines(); ?>});
         window.quickDevBar.qdbFetchPromise('quickdevbar/log/view/?' + params.toString()).then(html => {
-            document.getElementById(target).innerHTML = html;
+            document.getElementById(target).textContent = html;
         });
     };
 

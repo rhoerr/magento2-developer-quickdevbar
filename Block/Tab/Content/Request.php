@@ -20,11 +20,12 @@ class Request extends \ADM\QuickDevBar\Block\Tab\Panel
     public function formatValue($data)
     {
         if (is_array($data['value'])) {
-            return '<pre>' . print_r($data['value'], true) . '</pre>';
+            return '<pre>' . $this->escapeHtml(print_r($data['value'], true)) . '</pre>';
         } elseif (!empty($data['is_url'])) {
-            return '<a target="_blank" href="' . $data['value'] . '">' . $data['value'] . '</a>';
+            return '<a target="_blank" href="' . $this->escapeUrl($data['value']) . '">'
+                . $this->escapeHtml($data['value']) . '</a>';
         } else {
-            return $data['value'];
+            return $this->escapeHtml($data['value']);
         }
     }
 }

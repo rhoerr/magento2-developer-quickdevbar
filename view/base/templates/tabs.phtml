@@ -8,14 +8,14 @@
 >
     <ul class="ui-tabs-nav" data-tabs tabbis-options='{"collapsible":<?=  $block->getIsMainTab() ? 'true' : 'false' ?>}'>
         <?php foreach ($block->getTabBlocks() as $tabBlock): ?>
-            <li id="<?=  $tabBlock->getId() ?>" class="<?=  $tabBlock->getClass() ?>" data-ajax="<?=  $tabBlock->isAjax(false) ? $tabBlock->getTabUrl() : '';?>" >
+            <li id="<?= $block->escapeHtmlAttr($tabBlock->getId()) ?>" class="<?= $block->escapeHtmlAttr($tabBlock->getClass()) ?>" data-ajax="<?= $tabBlock->isAjax(false) ? $block->escapeUrl($tabBlock->getTabUrl()) : ''; ?>" >
                 <a href="#"  >
                     <?php if ($tabBlock->getTitleImage()):?>
-                        <img  class="qdb-img" src="<?=  $block->getViewFileUrl($tabBlock->getTitleImage()) ?>">
+                        <img  class="qdb-img" src="<?= $block->escapeUrl($block->getViewFileUrl($tabBlock->getTitleImage())) ?>">
                     <?php endif;?>
-                    <?=  $tabBlock->getTitle() ?>
+                    <?= $block->escapeHtml($tabBlock->getTitle()) ?>
                     <?php if ($tabBlock->getTitleBadge()):?>
-                        <span class="qdb-tab-badge"><?=  $tabBlock->getTitleBadge();?></span>
+                        <span class="qdb-tab-badge"><?= $block->escapeHtml($tabBlock->getTitleBadge()); ?></span>
                     <?php endif;?>
                 </a>
             </li>
@@ -24,7 +24,7 @@
     <div data-panes>
     <?php $tabIndice = 0; ?>
     <?php foreach ($block->getTabBlocks() as $tabBlock): ?>
-        <div id="<?=  $tabBlock->getId('panel-') ?>" class="qdb-panel">
+        <div id="<?= $block->escapeHtmlAttr($tabBlock->getId('panel-')) ?>" class="qdb-panel">
             <?=  ($tabBlock->isAjax(false)) ? $tabBlock->getHtmlLoader('big') : $tabBlock->toHtml(); ?>
         </div>
         <?php $tabIndice++; ?>

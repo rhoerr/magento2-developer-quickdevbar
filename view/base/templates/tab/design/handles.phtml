@@ -7,7 +7,7 @@
     <th><?=  __('Handles'); ?></th>
     <td>
     <?php foreach ($block->getHandles() as $handle): ?>
-        <?=  $handle; ?></br>
+        <?= $block->escapeHtml($handle); ?></br>
     <?php endforeach;?>
     <br/>
     </td>

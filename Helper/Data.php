@@ -437,11 +437,14 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         if($btLinkFormat = $this->getIdeRegex()) {
-            return sprintf('<span data-ide-file="'.$btLinkFormat.'">'.$btFormat.'</span>', BP, $relativeFile, $line);
+            return sprintf(
+                '<span data-ide-file="%s">%s</span>',
+                htmlspecialchars(sprintf($btLinkFormat, BP, $relativeFile, $line), ENT_QUOTES),
+                htmlspecialchars(sprintf($btFormat, BP, $relativeFile, $line), ENT_QUOTES)
+            );
         }
 
-        return sprintf($btFormat, BP, $relativeFile, $line);
-
+        return htmlspecialchars(sprintf($btFormat, BP, $relativeFile, $line), ENT_QUOTES);
     }
 
     /**
