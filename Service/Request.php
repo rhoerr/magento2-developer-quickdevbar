@@ -68,10 +68,11 @@ class Request implements ServiceInterface
         $requestData[] = ['name' => 'Area', 'value' => $this->appState->getAreaCode()];
 
         if ($this->session->isLoggedIn()) {
-            $requestData[] = ['name' => 'Logged user', 'value' => $this->session->getCustomer()->getEmail()];
+            $email = $this->session->getCustomer()->getEmail();
+            $maskedEmail = '***@' . substr($email, strpos($email, '@') + 1);
+            $requestData[] = ['name' => 'Logged user', 'value' => $maskedEmail];
             $requestData[] = ['name' => 'Group id', 'value' => $this->session->getCustomer()->getGroupId()];
         }
-        $requestData[] = ['name' => 'Session Id', 'value' => $this->session->getSessionId()];
 
         if ($request->getBeforeForwardInfo()) {
             $requestData[] = ['name' => 'Before Forward', 'value' => $request->getBeforeForwardInfo()];
@@ -84,7 +85,7 @@ class Request implements ServiceInterface
         $requestData[] = ['name' => 'Magento', 'value' => $this->productMetadata->getVersion()];
         $requestData[] = ['name' => 'Mage Mode', 'value' => $this->appState->getMode()];
 
-        $requestData[] = ['name' => 'Backend', 'value' => $request->getDistroBaseUrl() . $this->frontNameResolver->getFrontName(), 'is_url' => true];
+        $requestData[] = ['name' => 'Backend', 'value' => 'Admin'];
 
         return $requestData;
     }
