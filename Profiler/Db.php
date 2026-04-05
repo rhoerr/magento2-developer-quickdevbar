@@ -21,7 +21,7 @@ class Db extends \Zend_Db_Profiler
         if(empty($this->cookieHelper)) {
             //Mea culpa, mea maxima culpa
             $objectManager = ObjectManager::getInstance();
-            $this->cookieHelper = $objectManager->create(\ADM\QuickDevBar\Helper\Cookie::class);
+            $this->cookieHelper = $objectManager->get(\ADM\QuickDevBar\Helper\Cookie::class);
         }
 
         return $this->cookieHelper->isProfilerBacktraceEnabled();
