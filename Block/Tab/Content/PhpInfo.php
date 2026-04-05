@@ -24,7 +24,7 @@ class PhpInfo extends \ADM\QuickDevBar\Block\Tab\Panel
 
     public function showPhpInfo()
     {
-        $what = $this->hasShortWhat() ? INFO_VARIABLES|INFO_ENVIRONMENT : INFO_GENERAL|INFO_CONFIGURATION|INFO_MODULES;
+        $what = INFO_GENERAL | INFO_CONFIGURATION | INFO_MODULES;
 
         ob_start();
         phpinfo($what);

@@ -69,8 +69,8 @@ class Config extends \ADM\QuickDevBar\Block\Tab\Panel
 
     private function isSensitivePath(string $path): bool
     {
-        if ($this->typePool->isValueSensitive($path)
-            || $this->typePool->isValueEnvironment($path)
+        if ($this->typePool->isPresent($path, TypePool::TYPE_SENSITIVE)
+            || $this->typePool->isPresent($path, TypePool::TYPE_ENVIRONMENT)
         ) {
             return true;
         }
