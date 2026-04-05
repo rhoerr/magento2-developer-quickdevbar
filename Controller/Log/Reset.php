@@ -31,16 +31,12 @@ class Reset extends \ADM\QuickDevBar\Controller\Index implements CsrfAwareAction
         $output = '';
 
         $file = $this->_qdbHelper->getLogFiles($fileKey);
-        if (!empty($file['size'])) {
-            if (unlink($file['path'])) {
-                $output = 'File has been reseted.';
-            } else {
-                $output = 'Cannot reset file.';
-            }
-        } elseif (empty($file['size'])) {
-            $output = 'Cannot find file to reset.';
+        if (!$file) {
+            $output = 'Cannot find file.';
+        } elseif (!empty($file['size'])) {
+            $output = unlink($file['path']) ? 'File has been reset.' : 'Cannot reset file.';
         } else {
-            $output = $file['path'];
+            $output = 'Cannot find file to reset.';
         }
 
         $this->_view->loadLayout();
