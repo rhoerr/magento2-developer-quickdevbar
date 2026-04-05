@@ -1,31 +1,51 @@
 <?php
+
 namespace ADM\QuickDevBar\Controller\Action;
 
-class Cache extends \ADM\QuickDevBar\Controller\Index
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
+use Magento\Framework\App\RequestInterface;
+
+class Cache extends \ADM\QuickDevBar\Controller\Index implements CsrfAwareActionInterface, HttpPostActionInterface
 {
+    /**
+     * @inheritDoc
+     */
+    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
+    {
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function validateForCsrf(RequestInterface $request): ?bool
+    {
+        return null;
+    }
 
     public function execute()
     {
-        $ctrlMsg = $this->_qdbHelper->getControllerMessage();
+        $error = false;
         $output = '';
-        try {
+        $ctrlMsg = $this->_qdbHelper->getControllerMessage();
 
-            $cacheFrontEndPool = $this->_qdbHelper->getCacheFrontendPool();
+        try {
+            $cacheFrontendPool = $this->_qdbHelper->getCacheFrontendPool();
             $this->_eventManager->dispatch('adminhtml_cache_flush_all');
-            foreach ($cacheFrontEndPool as $cacheFrontend) {
+            foreach ($cacheFrontendPool as $cacheFrontend) {
                 $cacheFrontend->clean();
                 $cacheFrontend->getBackend()->clean();
             }
-
             $output = 'Cache cleaned';
-
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $output = $e->getMessage();
             $error = true;
         }
 
         if ($ctrlMsg) {
-            $output = $ctrlMsg . ' (' . $output .')';
+            $output = $ctrlMsg . '<br/>' . $output;
         }
 
         $resultRaw = $this->_resultRawFactory->create();

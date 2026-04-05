@@ -148,20 +148,21 @@
                     scptElement.parentNode.replaceChild(clonedElement, scptElement);
                 });
             },
-            qdbFetchPromise: function (routePath) {
+            qdbFetchPromise: function (routePath, options = {}) {
                 const url = this.options.baseUrl + routePath;
-                return fetch(url, {
-                        //To be compliant with \Laminas\Http\Request::isXmlHttpRequest
-                        headers: {
-                            "X-Requested-With": "XMLHttpRequest",
-                        }
-                    }
+                const fetchOptions = {
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest",
+                    },
+                    ...options
+                };
+                return fetch(url, fetchOptions
                 ).then(response => {
                     if (!response.ok || response.status !==200) {
                         throw new Error(response.status + " Failed Fetch ");
                     }
                     return response.text()
-                }).catch((err) => console.error("Can’t access " + url + ". Error " + err, 'QDB Error'));
+                }).catch((err) => console.error("Can’t access " + url + ". Error " + err, ‘QDB Error’));
             },
             /**
              *  Apply enhancement on table
@@ -196,7 +197,16 @@
                         this.showLoader(actionConfig.target);
                     }
 
-                    this.qdbFetchPromise('quickdevbar/'+ actionConfig.path +'/?' + params.toString()).then(html => {
+                    const formData = new URLSearchParams(params);
+                    formData.append('form_key', window.FORM_KEY);
+                    this.qdbFetchPromise('quickdevbar/' + actionConfig.path + '/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-Requested-With': 'XMLHttpRequest',
+                        },
+                        body: formData.toString()
+                    }).then(html => {
                         if(actionConfig.target) {
                             document.getElementById(actionConfig.target).innerHTML = html;
                         }

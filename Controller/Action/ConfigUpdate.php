@@ -1,7 +1,12 @@
 <?php
 namespace ADM\QuickDevBar\Controller\Action;
 
-class ConfigUpdate extends \ADM\QuickDevBar\Controller\Index
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
+use Magento\Framework\App\RequestInterface;
+
+class ConfigUpdate extends \ADM\QuickDevBar\Controller\Index implements CsrfAwareActionInterface, HttpPostActionInterface
 {
     /**
      * @var \Magento\Config\Model\Resource\Config
@@ -46,7 +51,21 @@ class ConfigUpdate extends \ADM\QuickDevBar\Controller\Index
         $this->_resultForwardFactory = $resultForwardFactory;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
+    {
+        return null;
+    }
 
+    /**
+     * @inheritDoc
+     */
+    public function validateForCsrf(RequestInterface $request): ?bool
+    {
+        return null;
+    }
 
     public function execute()
     {
@@ -68,9 +87,6 @@ class ConfigUpdate extends \ADM\QuickDevBar\Controller\Index
                 case 'template_hints_blocks':
                 case 'translate':
                     $configScope = 'stores';
-                    break;
-                case 'devadmin':
-                    $configScope = 'default';
                     break;
                 default:
                     throw new \Exception('Scope auto is unrecognized');
@@ -106,11 +122,6 @@ class ConfigUpdate extends \ADM\QuickDevBar\Controller\Index
                     $this->_resourceConfig->saveConfig('dev/translate_inline/active', $configValue, $configScope, $configScopeId);
                     $output = "Translate set " . ($configValue ? 'On' : 'Off');
                     break;
-                case 'devadmin':
-                    $this->_resourceConfig->saveConfig('admin/security/password_lifetime', 0, $configScope, $configScopeId);
-                    $this->_resourceConfig->saveConfig('admin/security/password_is_forced', 0, $configScope, $configScopeId);
-                    $output = "Done";
-                    break;
                 default:
                     break;
             }
@@ -120,7 +131,7 @@ class ConfigUpdate extends \ADM\QuickDevBar\Controller\Index
             }
 
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $output = $e->getMessage();
             $error = true;
         }
