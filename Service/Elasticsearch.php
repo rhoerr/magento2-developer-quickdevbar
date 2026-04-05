@@ -9,7 +9,7 @@ class Elasticsearch implements ServiceInterface
 
     public function pullData()
     {
-        // TODO: Implement pullData() method.
+        return [];
     }
 
     public function addQuery(array $query, array $result)
