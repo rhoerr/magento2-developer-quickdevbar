@@ -2,7 +2,7 @@
 /** @var \ADM\QuickDevBar\Block\Tab\Wrapper $block */
 ?>
 
-<div class="qdb-container <?=  $block->getUiTabClass() ?>"
+<div class="qdb-container <?= $block->escapeHtmlAttr($block->getUiTabClass()) ?>"
  style="display: block;"
  "
 >
