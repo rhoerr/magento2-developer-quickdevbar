@@ -3,7 +3,7 @@
     <default>
         <dev>
             <quickdevbar>
-                <enable>2</enable>
+                <enable>0</enable>
                 <area>global</area>
                 <appearance>memorize</appearance>
                 <handle_vardumper>1</handle_vardumper>

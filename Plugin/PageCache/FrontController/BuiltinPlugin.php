@@ -1,65 +1,59 @@
 <?php
 
-
 namespace ADM\QuickDevBar\Plugin\PageCache\FrontController;
 
-
+use ADM\QuickDevBar\Helper\Data as QdbHelper;
+use ADM\QuickDevBar\Service\App\Cache as CacheService;
 use Magento\PageCache\Model\Cache\Type as PageCache;
-use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\Response\Http as ResponseHttp;
-use Magento\Framework\App\ResponseInterface;
 
 class BuiltinPlugin
 {
-    /**
-     * @var \ADM\QuickDevBar\Service\App\Cache
-     */
-    private $cacheService;
+    private CacheService $cacheService;
+    private QdbHelper $qdbHelper;
+    private ?bool $isAllowed = null;
 
-    /**
-     * @param \ADM\QuickDevBar\Service\App\Cache $cacheService
-     */
-    public function __construct(\ADM\QuickDevBar\Service\App\Cache $cacheService)
-    {
+    public function __construct(
+        CacheService $cacheService,
+        QdbHelper $qdbHelper
+    ) {
         $this->cacheService = $cacheService;
+        $this->qdbHelper = $qdbHelper;
     }
 
-    /**
-     * @param PageCache $subject
-     * @param string $identifier
-     */
+    private function isAllowed(): bool
+    {
+        if ($this->isAllowed === null) {
+            $this->isAllowed = $this->qdbHelper->isToolbarAccessAllowed();
+        }
+        return $this->isAllowed;
+    }
+
     public function beforeLoad(PageCache $subject, string $identifier)
     {
+        if (!$this->isAllowed()) {
+            return;
+        }
         $this->cacheService->addCache('load', $identifier);
     }
 
-    /**
-     * @param PageCache $subject
-     * @param string $data
-     * @param string $identifier
-     * @param array $tags
-     * @param $lifeTime
-     * @return void
-     */
     public function beforeSave(
         PageCache $subject,
         string $data,
         string $identifier,
         array $tags = [],
-                       $lifeTime = null
+        $lifeTime = null
     ) {
-
+        if (!$this->isAllowed()) {
+            return;
+        }
         $this->cacheService->addCache('save', $identifier);
     }
 
-
-    /**
-     * @param PageCache $subject
-     * @param string $identifier
-     * @return void
-     */
     public function beforeRemove(PageCache $subject, string $identifier)
     {
+        if (!$this->isAllowed()) {
+            return;
+        }
         $this->cacheService->addCache('remove', $identifier);
     }
 }

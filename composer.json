@@ -7,6 +7,7 @@
       "AFL-3.0"
     ],
     "version": "0.3.4",
+    "keywords": ["dev", "debug", "developer", "toolbar", "profiler"],
     "require": {
       "magento/magento-composer-installer": "*"
     },
