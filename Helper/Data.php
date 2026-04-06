@@ -417,7 +417,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $qdbFilename = $this->getQdbTempDir() . $filename . '.json';
 
         file_put_contents($qdbFilename, $content);
-        $this->cleanOldFiles();
     }
 
     /**
