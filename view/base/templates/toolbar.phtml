@@ -97,6 +97,7 @@
                             this.qdbFetchPromise("quickdevbar/index/ajax").then(html => {
                                 const wrapperElem =  document.getElementById(this.options.etTabWrapper);
                                 wrapperElem.innerHTML = html;
+                                this.executeScriptElements(wrapperElem);
                             }).then(()=>{
                                 this.tabsObj= new tabbisClass(this.options.tabbisOptions);
                                 this.applyTabPlugin(document);
@@ -124,6 +125,25 @@
             },
             loadUserData:function(key) {
                 return localStorage.getItem(key);
+            },
+            /**
+             * @see https://stackoverflow.com/a/69190644
+             * @param containerElement
+             */
+            executeScriptElements:function (containerElement) {
+                const scriptElements = containerElement.querySelectorAll("script");
+
+                Array.from(scriptElements).forEach((scptElement) => {
+                    const clonedElement = document.createElement("script");
+
+                    Array.from(scptElement.attributes).forEach((attribute) => {
+                        clonedElement.setAttribute(attribute.name, attribute.value);
+                    });
+
+                    clonedElement.text = scptElement.text;
+
+                    scptElement.parentNode.replaceChild(clonedElement, scptElement);
+                });
             },
             qdbFetchPromise: function (routePath) {
                 const url = this.options.baseUrl + routePath;
