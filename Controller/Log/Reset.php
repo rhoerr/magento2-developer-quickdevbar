@@ -41,6 +41,7 @@ class Reset extends \ADM\QuickDevBar\Controller\Index implements CsrfAwareAction
 
         $this->_view->loadLayout();
         $resultRaw = $this->_resultRawFactory->create();
+        // Control page caches (varnish, fastly, built-in php cache)
         $resultRaw->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0', true);
 
         return $resultRaw->setContents($output);
