@@ -7,16 +7,16 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class Config extends \ADM\QuickDevBar\Block\Tab\Panel
 {
-    private const MASK = '******';
+    protected const MASK = '******';
 
-    private const SENSITIVE_PATH_PREFIXES = [
+    protected const SENSITIVE_PATH_PREFIXES = [
         'crypt/',
         'payment/',
         'system/smtp/',
         'oauth/',
     ];
 
-    private const SENSITIVE_PATH_SEGMENTS = [
+    protected const SENSITIVE_PATH_SEGMENTS = [
         'api',
         'secret',
         'key',
@@ -26,7 +26,7 @@ class Config extends \ADM\QuickDevBar\Block\Tab\Panel
 
     protected $_config_values;
     protected $_appConfig;
-    private TypePool $typePool;
+    protected TypePool $typePool;
 
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
@@ -67,7 +67,7 @@ class Config extends \ADM\QuickDevBar\Block\Tab\Panel
         }
     }
 
-    private function isSensitivePath(string $path): bool
+    protected function isSensitivePath(string $path): bool
     {
         if ($this->typePool->isPresent($path, TypePool::TYPE_SENSITIVE)) {
             return true;
