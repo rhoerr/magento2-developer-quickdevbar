@@ -28,6 +28,10 @@ class BuiltinPlugin
         return $this->isAllowed;
     }
 
+    /**
+     * @param PageCache $subject
+     * @param string $identifier
+     */
     public function beforeLoad(PageCache $subject, string $identifier)
     {
         if (!$this->isAllowed()) {
@@ -36,6 +40,13 @@ class BuiltinPlugin
         $this->cacheService->addCache('load', $identifier);
     }
 
+    /**
+     * @param PageCache $subject
+     * @param string $data
+     * @param string $identifier
+     * @param array $tags
+     * @param int|null $lifeTime
+     */
     public function beforeSave(
         PageCache $subject,
         string $data,
@@ -49,6 +60,10 @@ class BuiltinPlugin
         $this->cacheService->addCache('save', $identifier);
     }
 
+    /**
+     * @param PageCache $subject
+     * @param string $identifier
+     */
     public function beforeRemove(PageCache $subject, string $identifier)
     {
         if (!$this->isAllowed()) {

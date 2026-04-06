@@ -20,6 +20,13 @@ class Invoker
         $this->qdbHelper = $qdbHelper;
     }
 
+    /**
+     * Record observer invocations for the dev bar profiler.
+     *
+     * @param \Magento\Framework\Event\InvokerInterface $class
+     * @param array $configuration
+     * @param Observer $observer
+     */
     public function beforeDispatch(
         \Magento\Framework\Event\InvokerInterface $class,
         array $configuration,

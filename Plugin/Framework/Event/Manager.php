@@ -19,6 +19,13 @@ class Manager
         $this->qdbHelper = $qdbHelper;
     }
 
+    /**
+     * Record dispatched events for the dev bar profiler.
+     *
+     * @param \Magento\Framework\Event\ManagerInterface $interceptor
+     * @param string $eventName
+     * @param array $data
+     */
     public function beforeDispatch($interceptor, $eventName, $data = [])
     {
         if ($this->isAllowed === null) {

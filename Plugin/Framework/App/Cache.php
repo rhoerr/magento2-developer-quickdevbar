@@ -28,6 +28,10 @@ class Cache
         return $this->isAllowed;
     }
 
+    /**
+     * @param CacheInterface $subject
+     * @param string $identifier
+     */
     public function beforeLoad(CacheInterface $subject, string $identifier)
     {
         if (!$this->isAllowed()) {
@@ -36,6 +40,13 @@ class Cache
         $this->cacheService->addCache('load', $identifier);
     }
 
+    /**
+     * @param CacheInterface $subject
+     * @param string $data
+     * @param string $identifier
+     * @param array $tags
+     * @param int|null $lifeTime
+     */
     public function beforeSave(
         CacheInterface $subject,
         string $data,
@@ -49,6 +60,10 @@ class Cache
         $this->cacheService->addCache('save', $identifier);
     }
 
+    /**
+     * @param CacheInterface $subject
+     * @param string $identifier
+     */
     public function beforeRemove(CacheInterface $subject, string $identifier)
     {
         if (!$this->isAllowed()) {
