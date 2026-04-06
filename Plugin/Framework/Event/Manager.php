@@ -2,34 +2,38 @@
 
 namespace ADM\QuickDevBar\Plugin\Framework\Event;
 
+use ADM\QuickDevBar\Helper\Data as QdbHelper;
+use ADM\QuickDevBar\Service\Event\Manager as ServiceManager;
+
 class Manager
 {
-    /**
-     * @var \ADM\QuickDevBar\Service\Manager
-     */
-    private $serviceManager;
+    private ServiceManager $serviceManager;
+    private QdbHelper $qdbHelper;
+    private ?bool $isAllowed = null;
 
-    /**
-     * @param \ADM\QuickDevBar\Helper\Register $qdbHelperRegister
-     */
     public function __construct(
-        \ADM\QuickDevBar\Service\Event\Manager $serviceManager
+        ServiceManager $serviceManager,
+        QdbHelper $qdbHelper
     ) {
         $this->serviceManager = $serviceManager;
+        $this->qdbHelper = $qdbHelper;
     }
 
     /**
-     * Before dispatch event
+     * Record dispatched events for the dev bar profiler.
      *
-     * Calls all observer callbacks registered for this event
-     * and multiple observers matching event name pattern
-     *
-     * @param \Magento\Framework\Event\Manager $interceptor
+     * @param \Magento\Framework\Event\ManagerInterface $interceptor
      * @param string $eventName
      * @param array $data
      */
     public function beforeDispatch($interceptor, $eventName, $data = [])
     {
+        if ($this->isAllowed === null) {
+            $this->isAllowed = $this->qdbHelper->isToolbarAccessAllowed();
+        }
+        if (!$this->isAllowed) {
+            return;
+        }
         $this->serviceManager->addEvent($eventName, $data);
     }
 }

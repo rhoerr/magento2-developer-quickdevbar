@@ -115,6 +115,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function isToolbarAccessAllowed($testWithRestriction=false)
     {
+        if ($this->appState->getMode() === State::MODE_PRODUCTION) {
+            return false;
+        }
+
         $allow = false;
         $enable = $this->getQdbConfig('enable');
 
