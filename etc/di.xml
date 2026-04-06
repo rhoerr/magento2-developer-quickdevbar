@@ -96,6 +96,17 @@
         </arguments>
     </type>
 
+    <type name="ADM\QuickDevBar\Block\Toolbar">
+        <arguments>
+            <argument name="frontUrl" xsi:type="object">Magento\Framework\Url</argument>
+        </arguments>
+    </type>
+    <type name="ADM\QuickDevBar\Block\Tab\Panel">
+        <arguments>
+            <argument name="frontUrl" xsi:type="object">Magento\Framework\Url</argument>
+        </arguments>
+    </type>
+
     <type name="\ADM\QuickDevBar\Helper\Data">
         <arguments>
             <argument name="ideList" xsi:type="array">

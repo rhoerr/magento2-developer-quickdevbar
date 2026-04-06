@@ -3,23 +3,28 @@
 namespace ADM\QuickDevBar\Block\Tab;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\ObjectManager;
+use Magento\Framework\UrlInterface;
 
 class Panel extends \Magento\Framework\View\Element\Template
 {
     protected $_mainTabs;
-    protected $_frontUrl;
-
 
     protected $helper;
 
     protected $qdbHelperRegister;
 
-
+    /**
+     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param \ADM\QuickDevBar\Helper\Data $helper
+     * @param \ADM\QuickDevBar\Helper\Register $qdbHelperRegister
+     * @param UrlInterface $frontUrl
+     * @param array $data
+     */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \ADM\QuickDevBar\Helper\Data $helper,
         \ADM\QuickDevBar\Helper\Register $qdbHelperRegister,
+        private readonly UrlInterface $frontUrl,
         array $data = []
     ) {
         $data['show_badge'] = true;
@@ -136,17 +141,13 @@ class Panel extends \Magento\Framework\View\Element\Template
     /**
      * Generate url by route and parameters
      *
-     * @param   string $route
-     * @param   array $params
-     * @return  string
+     * @param string $route
+     * @param array $params
+     * @return string
      */
     public function getFrontUrl($route = '', $params = [])
     {
-        if ($this->_frontUrl === null) {
-            $this->_frontUrl = ObjectManager::getInstance()->get('Magento\Framework\Url');
-        }
-
-        return $this->_frontUrl->getUrl($route, $params);
+        return $this->frontUrl->getUrl($route, $params);
     }
 
     public function getHtmlLoader($class='')

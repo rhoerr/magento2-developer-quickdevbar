@@ -64,19 +64,18 @@ class LayoutGenerateBlocksAfterObserver implements ObserverInterface
      * @see: https://github.com/magento/magento2/issues/748
      *
      * @param \Magento\Framework\View\LayoutInterface $layout
-     * @return array|null
-     * @throws \ReflectionException
+     * @return array
      */
     public function getTreeBlocksHierarchy($layout)
     {
-        //$layout = $this->getLayout();
-
-        $reflection = new \ReflectionClass($layout);
-
-        /** @var \Magento\Framework\View\Layout\Data\Structure $structure */
-        $structure = $reflection->getProperty('structure');
-        $structure->setAccessible(true);
-        $structure = $structure->getValue($layout);
+        try {
+            $reflection = new \ReflectionClass($layout);
+            $structure = $reflection->getProperty('structure');
+            $structure->setAccessible(true);
+            $structure = $structure->getValue($layout);
+        } catch (\ReflectionException $e) {
+            return [];
+        }
 
         if($elements = $layout->getXpath('//' . Element::TYPE_BLOCK . '[@cacheable="false"]')) {
             foreach ($elements as $element) {

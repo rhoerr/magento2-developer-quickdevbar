@@ -26,15 +26,22 @@ class Plugin implements ServiceInterface
         if ($this->pluginsByTypes === null) {
             $this->pluginsByTypes =  [];
 
-            $reflection = new \ReflectionClass($this->pluginList);
+            try {
+                $reflection = new \ReflectionClass($this->pluginList);
+                $processed = $reflection->getProperty('_processed');
+                $processed->setAccessible(true);
+                $processedDefinitions = $processed->getValue($this->pluginList);
 
-            $processed = $reflection->getProperty('_processed');
-            $processed->setAccessible(true);
-            $processed = $processed->getValue($this->pluginList);
+                $inherited = $reflection->getProperty('_inherited');
+                $inherited->setAccessible(true);
+                $inheritedDefinitions = $inherited->getValue($this->pluginList);
+            } catch (\ReflectionException $e) {
+                $this->pluginsByTypes = [];
+                return $this->pluginsByTypes;
+            }
 
-            $inherited = $reflection->getProperty('_inherited');
-            $inherited->setAccessible(true);
-            $inherited = $inherited->getValue($this->pluginList);
+            $processed = $processedDefinitions;
+            $inherited = $inheritedDefinitions;
 
 
             $types = [DefinitionInterface::LISTENER_BEFORE=>'before',

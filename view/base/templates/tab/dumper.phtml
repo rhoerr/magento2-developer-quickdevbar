@@ -61,13 +61,13 @@ let callForUpdate= function (url) {
      *
      * @see: https://www.reddit.com/r/GoogleTagManager/comments/155ou5w/comment/jt6zzjm/
      */
-    let qdbOriginalFetch = window.fetch;
-    window.fetch = function () {
-        return qdbOriginalFetch.apply(this, arguments).then((response) => {
+    const _originalFetch = window.fetch;
+    window.fetch = function(...args) {
+        return _originalFetch.apply(this, args).then((response) => {
             callForUpdate(response.url);
             return response;
         });
-    }
+    };
     <?php endif; ?>
 
 </script>

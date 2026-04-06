@@ -12,7 +12,7 @@ class Cache implements ServiceInterface
 
 
     public function addCache($event, $identifier) {
-        if(empty($cacheEvents[$identifier])) {
+        if(empty($this->cacheEvents[$identifier])) {
             $this->cacheEvents[$identifier] = ['load'=>0, 'save'=>0, 'remove'=>0];
         }
         $this->cacheEvents[$identifier][$event]++;

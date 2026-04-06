@@ -7,6 +7,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\State;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Serialize\SerializerInterface;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -48,7 +49,19 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     private array $ideList;
 
     /**
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @var SerializerInterface
+     */
+    private SerializerInterface $serializer;
+
+    /**
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Magento\Framework\App\Cache\Frontend\Pool $cacheFrontendPool
+     * @param \Magento\Framework\Module\ModuleListInterface $moduleList
+     * @param \Magento\Framework\Filesystem $filesystem
+     * @param array $ideList
+     * @param State $appState
+     * @param QdbSession $qdbSession
+     * @param SerializerInterface $serializer
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -57,17 +70,18 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Framework\Filesystem $filesystem,
         array $ideList,
         State $appState,
-        QdbSession $qdbSession
+        QdbSession $qdbSession,
+        SerializerInterface $serializer
     ) {
         parent::__construct($context);
         $this->cacheFrontendPool = $cacheFrontendPool;
         $this->moduleList = $moduleList;
 
-
         $this->filesystem = $filesystem;
         $this->appState = $appState;
         $this->qdbSession = $qdbSession;
         $this->ideList = $ideList;
+        $this->serializer = $serializer;
     }
 
 
@@ -218,7 +232,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected function canResetFile($filepath)
     {
-        if (is_file($filepath) and is_writable($filepath)) {
+        if (is_file($filepath) && is_writable($filepath)) {
             return true;
         }
         return false;
@@ -230,7 +244,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected function getFileSize($filepath)
     {
-        if (is_file($filepath) and file_exists($filepath)) {
+        if (is_file($filepath) && file_exists($filepath)) {
             return filesize($filepath);
         }
         return 0;
@@ -322,7 +336,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     protected function getWrapperBaseFilename($ajax = false)
     {
-        $qdbSessionId = $this->appState->getAreaCode().$this->qdbSession->getSessionId();
+        $qdbSessionId = hash('sha256', $this->appState->getAreaCode() . $this->qdbSession->getSessionId());
         return  'qdb_register_' . (!$ajax ? 'std' : 'xhr') . '_' . $qdbSessionId;
     }
 
@@ -357,12 +371,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             throw new LocalizedException(__('Error on QDB main file'));
         }
 
-        $serializer = new \Magento\Framework\Serialize\Serializer\Json();
-
         $content = [];
         foreach ($wrapperFiles as $jsonContent) {
             if($jsonContent) {
-                foreach ($serializer->unserialize($jsonContent) as $contentKey => $contentValue) {
+                foreach ($this->serializer->unserialize($jsonContent) as $contentKey => $contentValue) {
                     $content[$contentKey] =  empty($content[$contentKey]) ? $contentValue : array_merge($content[$contentKey], $contentValue);
                 }
             }
