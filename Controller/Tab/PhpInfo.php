@@ -14,7 +14,7 @@ class PhpInfo extends \ADM\QuickDevBar\Controller\Index
             $output = $this->_layoutFactory->create()
              ->createBlock('ADM\QuickDevBar\Block\Tab\Content\PhpInfo')
              ->toHtml();
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $output = $e->getMessage();
         }
 

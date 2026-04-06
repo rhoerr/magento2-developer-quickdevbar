@@ -39,7 +39,7 @@ class Ajax extends \ADM\QuickDevBar\Controller\Index
             } else {
                 $output = 'Cannot found block: '. $blockName;
             }
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $output = $e->getMessage();
         }
 
