@@ -16,9 +16,9 @@
 <tbody>
     <?php foreach ($block->getEvents() as $event): ?>
       <tr>
-        <td><?=  $event['event']; ?></td>
-        <td><?=  (!empty($event['args']) ? '<ul><li>'.implode('</li><li>', $event['args']).'</li></ul>' : ''); ?></td>
-        <td><?=  $event['nbr']; ?></td>
+        <td><?= $block->escapeHtml($event['event']); ?></td>
+        <td><?php if (!empty($event['args'])): ?><ul><?php foreach ($event['args'] as $arg): ?><li><?= $block->escapeHtml($arg) ?></li><?php endforeach; ?></ul><?php endif; ?></td>
+        <td><?= (int)$event['nbr']; ?></td>
       </tr>
     <?php endforeach ?>
 </tbody>

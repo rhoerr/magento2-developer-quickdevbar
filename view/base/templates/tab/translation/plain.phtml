@@ -15,8 +15,8 @@
         $i = 0;
         foreach ($block->getTranslations() as $original => $translation): ?>
             <tr>
-                <td><?=  $original; ?></td>
-                <td><?=  $translation; ?></td>
+                <td><?= $block->escapeHtml($original); ?></td>
+                <td><?= $block->escapeHtml($translation); ?></td>
             </tr>
             <?php $i++; ?>
         <?php endforeach ?>

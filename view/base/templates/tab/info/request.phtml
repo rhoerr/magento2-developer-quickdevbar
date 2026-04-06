@@ -13,8 +13,8 @@
 <table class="qdb_table_2col">
 <?php foreach ($block->getRequestData() as $data):?>
     <tr>
-        <th><?=  $data['name'];?></th>
-        <td><?=  $block->formatValue($data);?>
+        <th><?= $block->escapeHtml($data['name']); ?></th>
+        <td><?= $block->formatValue($data); ?>
     </td>
 <?php endforeach;?>
 </table>

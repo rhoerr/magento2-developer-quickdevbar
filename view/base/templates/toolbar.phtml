@@ -131,8 +131,6 @@
              * @param containerElement
              */
             executeScriptElements:function (containerElement) {
-
-
                 const scriptElements = containerElement.querySelectorAll("script");
 
                 Array.from(scriptElements).forEach((scptElement) => {
@@ -143,8 +141,7 @@
                     });
 
                     clonedElement.text = scptElement.text;
-                    this.log(scptElement)
-                    // May cause a csp violation
+
                     scptElement.parentNode.replaceChild(clonedElement, scptElement);
                 });
             },
