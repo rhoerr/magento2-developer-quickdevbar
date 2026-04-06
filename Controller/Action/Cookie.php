@@ -4,11 +4,8 @@ namespace ADM\QuickDevBar\Controller\Action;
 
 use ADM\QuickDevBar\Helper\Cookie as CookieHelper;
 use Magento\Framework\App\Action\HttpPostActionInterface;
-use Magento\Framework\App\CsrfAwareActionInterface;
-use Magento\Framework\App\Request\InvalidRequestException;
-use Magento\Framework\App\RequestInterface;
 
-class Cookie extends \ADM\QuickDevBar\Controller\Index implements CsrfAwareActionInterface, HttpPostActionInterface
+class Cookie extends \ADM\QuickDevBar\Controller\Index implements HttpPostActionInterface
 {
     private const ALLOWED_COOKIES = [
         CookieHelper::COOKIE_NAME_PROFILER_ENABLED,
@@ -35,22 +32,6 @@ class Cookie extends \ADM\QuickDevBar\Controller\Index implements CsrfAwareActio
         $this->cookieManager = $cookieManager;
         $this->cookieMetadataFactory = $cookieMetadataFactory;
         $this->sessionConfig = $sessionConfig;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
-    {
-        return null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validateForCsrf(RequestInterface $request): ?bool
-    {
-        return null;
     }
 
     public function execute()

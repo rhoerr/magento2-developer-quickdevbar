@@ -2,11 +2,8 @@
 namespace ADM\QuickDevBar\Controller\Action;
 
 use Magento\Framework\App\Action\HttpPostActionInterface;
-use Magento\Framework\App\CsrfAwareActionInterface;
-use Magento\Framework\App\Request\InvalidRequestException;
-use Magento\Framework\App\RequestInterface;
 
-class ConfigUpdate extends \ADM\QuickDevBar\Controller\Index implements CsrfAwareActionInterface, HttpPostActionInterface
+class ConfigUpdate extends \ADM\QuickDevBar\Controller\Index implements HttpPostActionInterface
 {
     /**
      * @var \Magento\Config\Model\Resource\Config
@@ -49,22 +46,6 @@ class ConfigUpdate extends \ADM\QuickDevBar\Controller\Index implements CsrfAwar
         $this->_resourceConfig = $resourceConfig;
         $this->_storeManager = $storeManager;
         $this->_resultForwardFactory = $resultForwardFactory;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
-    {
-        return null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validateForCsrf(RequestInterface $request): ?bool
-    {
-        return null;
     }
 
     public function execute()

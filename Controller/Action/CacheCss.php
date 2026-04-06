@@ -3,11 +3,8 @@
 namespace ADM\QuickDevBar\Controller\Action;
 
 use Magento\Framework\App\Action\HttpPostActionInterface;
-use Magento\Framework\App\CsrfAwareActionInterface;
-use Magento\Framework\App\Request\InvalidRequestException;
-use Magento\Framework\App\RequestInterface;
 
-class CacheCss extends \ADM\QuickDevBar\Controller\Index implements CsrfAwareActionInterface, HttpPostActionInterface
+class CacheCss extends \ADM\QuickDevBar\Controller\Index implements HttpPostActionInterface
 {
     protected $_mergeService;
 
@@ -20,22 +17,6 @@ class CacheCss extends \ADM\QuickDevBar\Controller\Index implements CsrfAwareAct
     ) {
         parent::__construct($context, $qdbHelper, $resultRawFactory, $layoutFactory);
         $this->_mergeService = $mergeService;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
-    {
-        return null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validateForCsrf(RequestInterface $request): ?bool
-    {
-        return null;
     }
 
     public function execute()
