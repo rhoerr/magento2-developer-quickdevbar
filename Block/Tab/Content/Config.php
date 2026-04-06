@@ -17,7 +17,7 @@ class Config extends \ADM\QuickDevBar\Block\Tab\Panel
     ];
 
     private const SENSITIVE_PATH_SEGMENTS = [
-        'password',
+        'api',
         'secret',
         'key',
         'token',
@@ -69,9 +69,7 @@ class Config extends \ADM\QuickDevBar\Block\Tab\Panel
 
     private function isSensitivePath(string $path): bool
     {
-        if ($this->typePool->isPresent($path, TypePool::TYPE_SENSITIVE)
-            || $this->typePool->isPresent($path, TypePool::TYPE_ENVIRONMENT)
-        ) {
+        if ($this->typePool->isPresent($path, TypePool::TYPE_SENSITIVE)) {
             return true;
         }
 
