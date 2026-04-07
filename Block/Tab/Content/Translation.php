@@ -4,6 +4,7 @@ namespace ADM\QuickDevBar\Block\Tab\Content;
 
 use ADM\QuickDevBar\Helper\Translate;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Template;
 
 class Translation extends \ADM\QuickDevBar\Block\Tab\Panel
@@ -16,6 +17,9 @@ class Translation extends \ADM\QuickDevBar\Block\Tab\Panel
     /**
      * @param Template\Context $context
      * @param Translate $translate
+     * @param \ADM\QuickDevBar\Helper\Data $qdbHelper
+     * @param \ADM\QuickDevBar\Helper\Register $qdbHelperRegister
+     * @param UrlInterface $frontUrl
      * @param array $data
      */
     public function __construct(
@@ -23,9 +27,10 @@ class Translation extends \ADM\QuickDevBar\Block\Tab\Panel
         Translate $translate,
         \ADM\QuickDevBar\Helper\Data $qdbHelper,
         \ADM\QuickDevBar\Helper\Register $qdbHelperRegister,
+        UrlInterface $frontUrl,
         array $data = []
     ) {
-        parent::__construct($context, $qdbHelper, $qdbHelperRegister, $data);
+        parent::__construct($context, $qdbHelper, $qdbHelperRegister, $frontUrl, $data);
         $this->translate = $translate;
     }
 

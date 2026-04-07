@@ -5,6 +5,7 @@ namespace ADM\QuickDevBar\Block\Tab\Content;
 use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Component\ComponentRegistrarInterface;
 use Magento\Framework\Filesystem\Directory\ReadFactory;
+use Magento\Framework\UrlInterface;
 
 class Help extends \ADM\QuickDevBar\Block\Tab\Panel
 {
@@ -19,10 +20,11 @@ class Help extends \ADM\QuickDevBar\Block\Tab\Panel
         \ADM\QuickDevBar\Helper\Register $qdbHelperRegister,
         ComponentRegistrarInterface $componentRegistrar,
         ReadFactory                 $readFactory,
+        UrlInterface $frontUrl,
         array $data = []
     ) {
         $data['show_badge'] = true;
-        parent::__construct($context, $helper, $qdbHelperRegister, $data);
+        parent::__construct($context, $helper, $qdbHelperRegister, $frontUrl, $data);
 
         $this->componentRegistrar = $componentRegistrar;
         $this->readFactory = $readFactory;

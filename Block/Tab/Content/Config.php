@@ -4,6 +4,7 @@ namespace ADM\QuickDevBar\Block\Tab\Content;
 
 use Magento\Config\Model\Config\TypePool;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\UrlInterface;
 
 class Config extends \ADM\QuickDevBar\Block\Tab\Panel
 {
@@ -34,11 +35,12 @@ class Config extends \ADM\QuickDevBar\Block\Tab\Panel
         \ADM\QuickDevBar\Helper\Data $qdbHelper,
         \ADM\QuickDevBar\Helper\Register $qdbHelperRegister,
         TypePool $typePool,
+        UrlInterface $frontUrl,
         array $data = []
     ) {
         $this->_appConfig = $appConfig;
         $this->typePool = $typePool;
-        parent::__construct($context, $qdbHelper, $qdbHelperRegister, $data);
+        parent::__construct($context, $qdbHelper, $qdbHelperRegister, $frontUrl, $data);
     }
 
     public function getTitleBadge()
