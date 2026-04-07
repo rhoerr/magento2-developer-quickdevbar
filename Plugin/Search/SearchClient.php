@@ -2,24 +2,20 @@
 
 namespace ADM\QuickDevBar\Plugin\Search;
 
-use ADM\QuickDevBar\Helper\Data as QdbHelper;
+use ADM\QuickDevBar\Service\AccessChecker;
 
 class SearchClient
 {
-    private QdbHelper $qdbHelper;
-    private ?bool $isAllowed = null;
+    private AccessChecker $accessChecker;
 
-    public function __construct(QdbHelper $qdbHelper)
+    public function __construct(AccessChecker $accessChecker)
     {
-        $this->qdbHelper = $qdbHelper;
+        $this->accessChecker = $accessChecker;
     }
 
     public function beforeQuery(\Magento\OpenSearch\Model\SearchClient $subject, array $query)
     {
-        if ($this->isAllowed === null) {
-            $this->isAllowed = $this->qdbHelper->isToolbarAccessAllowed();
-        }
-        if (!$this->isAllowed) {
+        if (!$this->accessChecker->isToolbarAccessAllowed()) {
             return;
         }
         return [$query];

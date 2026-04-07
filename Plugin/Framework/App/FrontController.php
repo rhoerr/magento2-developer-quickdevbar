@@ -4,6 +4,7 @@ namespace ADM\QuickDevBar\Plugin\Framework\App;
 
 use ADM\QuickDevBar\Helper\Data;
 use ADM\QuickDevBar\Helper\Register;
+use ADM\QuickDevBar\Service\AccessChecker;
 use ADM\QuickDevBar\Service\Dumper;
 use Magento\Framework\App\RequestInterface;
 
@@ -17,22 +18,27 @@ class FrontController
 
     private Register $register;
 
+    private AccessChecker $accessChecker;
+
     /**
      * @param RequestInterface $request
      * @param Data $qdbHelper
      * @param Register $register
      * @param Dumper $dumper
+     * @param AccessChecker $accessChecker
      */
     public function __construct(RequestInterface $request,
                                 Data $qdbHelper,
                                 Register $register,
-                                Dumper $dumper
+                                Dumper $dumper,
+                                AccessChecker $accessChecker
     )
     {
         $this->request = $request;
         $this->qdbHelper = $qdbHelper;
         $this->register = $register;
         $this->dumper = $dumper;
+        $this->accessChecker = $accessChecker;
     }
 
     /**
@@ -47,7 +53,7 @@ class FrontController
     {
 
 
-        if(!$this->qdbHelper->isToolbarAccessAllowed()) {
+        if(!$this->accessChecker->isToolbarAccessAllowed()) {
             return;
         }
 

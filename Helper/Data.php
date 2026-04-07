@@ -41,14 +41,20 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     private $appState;
     /**
-     * @var Session
+     * @var QdbSession
      */
     private $qdbSession;
 
     private array $ideList;
 
     /**
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Magento\Framework\App\Cache\Frontend\Pool $cacheFrontendPool
+     * @param \Magento\Framework\Module\ModuleListInterface $moduleList
+     * @param \Magento\Framework\Filesystem $filesystem
+     * @param array $ideList
+     * @param State $appState
+     * @param QdbSession $qdbSession
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,

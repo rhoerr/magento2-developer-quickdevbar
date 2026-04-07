@@ -2,30 +2,21 @@
 
 namespace ADM\QuickDevBar\Plugin\Framework\App;
 
-use ADM\QuickDevBar\Helper\Data as QdbHelper;
+use ADM\QuickDevBar\Service\AccessChecker;
 use ADM\QuickDevBar\Service\App\Cache as CacheService;
 use Magento\Framework\App\CacheInterface;
 
 class Cache
 {
     private CacheService $cacheService;
-    private QdbHelper $qdbHelper;
-    private ?bool $isAllowed = null;
+    private AccessChecker $accessChecker;
 
     public function __construct(
         CacheService $cacheService,
-        QdbHelper $qdbHelper
+        AccessChecker $accessChecker
     ) {
         $this->cacheService = $cacheService;
-        $this->qdbHelper = $qdbHelper;
-    }
-
-    private function isAllowed(): bool
-    {
-        if ($this->isAllowed === null) {
-            $this->isAllowed = $this->qdbHelper->isToolbarAccessAllowed();
-        }
-        return $this->isAllowed;
+        $this->accessChecker = $accessChecker;
     }
 
     /**
@@ -34,7 +25,7 @@ class Cache
      */
     public function beforeLoad(CacheInterface $subject, string $identifier)
     {
-        if (!$this->isAllowed()) {
+        if (!$this->accessChecker->isToolbarAccessAllowed()) {
             return;
         }
         $this->cacheService->addCache('load', $identifier);
@@ -54,7 +45,7 @@ class Cache
         array $tags = [],
         $lifeTime = null
     ) {
-        if (!$this->isAllowed()) {
+        if (!$this->accessChecker->isToolbarAccessAllowed()) {
             return;
         }
         $this->cacheService->addCache('save', $identifier);
@@ -66,7 +57,7 @@ class Cache
      */
     public function beforeRemove(CacheInterface $subject, string $identifier)
     {
-        if (!$this->isAllowed()) {
+        if (!$this->accessChecker->isToolbarAccessAllowed()) {
             return;
         }
         $this->cacheService->addCache('remove', $identifier);

@@ -2,22 +2,21 @@
 
 namespace ADM\QuickDevBar\Plugin\Framework\Event;
 
-use ADM\QuickDevBar\Helper\Data as QdbHelper;
+use ADM\QuickDevBar\Service\AccessChecker;
 use ADM\QuickDevBar\Service\Observer as ServiceObserver;
 use Magento\Framework\Event\Observer;
 
 class Invoker
 {
     private ServiceObserver $serviceObserver;
-    private QdbHelper $qdbHelper;
-    private ?bool $isAllowed = null;
+    private AccessChecker $accessChecker;
 
     public function __construct(
         ServiceObserver $serviceObserver,
-        QdbHelper $qdbHelper
+        AccessChecker $accessChecker
     ) {
         $this->serviceObserver = $serviceObserver;
-        $this->qdbHelper = $qdbHelper;
+        $this->accessChecker = $accessChecker;
     }
 
     /**
@@ -32,10 +31,7 @@ class Invoker
         array $configuration,
         Observer $observer
     ) {
-        if ($this->isAllowed === null) {
-            $this->isAllowed = $this->qdbHelper->isToolbarAccessAllowed();
-        }
-        if (!$this->isAllowed) {
+        if (!$this->accessChecker->isToolbarAccessAllowed()) {
             return;
         }
         if (isset($configuration['disabled']) && true === $configuration['disabled']) {

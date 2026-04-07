@@ -2,21 +2,20 @@
 
 namespace ADM\QuickDevBar\Plugin\Framework\Event;
 
-use ADM\QuickDevBar\Helper\Data as QdbHelper;
+use ADM\QuickDevBar\Service\AccessChecker;
 use ADM\QuickDevBar\Service\Event\Manager as ServiceManager;
 
 class Manager
 {
     private ServiceManager $serviceManager;
-    private QdbHelper $qdbHelper;
-    private ?bool $isAllowed = null;
+    private AccessChecker $accessChecker;
 
     public function __construct(
         ServiceManager $serviceManager,
-        QdbHelper $qdbHelper
+        AccessChecker $accessChecker
     ) {
         $this->serviceManager = $serviceManager;
-        $this->qdbHelper = $qdbHelper;
+        $this->accessChecker = $accessChecker;
     }
 
     /**
@@ -28,10 +27,7 @@ class Manager
      */
     public function beforeDispatch($interceptor, $eventName, $data = [])
     {
-        if ($this->isAllowed === null) {
-            $this->isAllowed = $this->qdbHelper->isToolbarAccessAllowed();
-        }
-        if (!$this->isAllowed) {
+        if (!$this->accessChecker->isToolbarAccessAllowed()) {
             return;
         }
         $this->serviceManager->addEvent($eventName, $data);
