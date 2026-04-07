@@ -2,30 +2,21 @@
 
 namespace ADM\QuickDevBar\Plugin\PageCache\FrontController;
 
-use ADM\QuickDevBar\Helper\Data as QdbHelper;
+use ADM\QuickDevBar\Service\AccessChecker;
 use ADM\QuickDevBar\Service\App\Cache as CacheService;
 use Magento\PageCache\Model\Cache\Type as PageCache;
 
 class BuiltinPlugin
 {
     private CacheService $cacheService;
-    private QdbHelper $qdbHelper;
-    private ?bool $isAllowed = null;
+    private AccessChecker $accessChecker;
 
     public function __construct(
         CacheService $cacheService,
-        QdbHelper $qdbHelper
+        AccessChecker $accessChecker
     ) {
         $this->cacheService = $cacheService;
-        $this->qdbHelper = $qdbHelper;
-    }
-
-    private function isAllowed(): bool
-    {
-        if ($this->isAllowed === null) {
-            $this->isAllowed = $this->qdbHelper->isToolbarAccessAllowed();
-        }
-        return $this->isAllowed;
+        $this->accessChecker = $accessChecker;
     }
 
     /**
@@ -34,7 +25,7 @@ class BuiltinPlugin
      */
     public function beforeLoad(PageCache $subject, string $identifier)
     {
-        if (!$this->isAllowed()) {
+        if (!$this->accessChecker->isToolbarAccessAllowed()) {
             return;
         }
         $this->cacheService->addCache('load', $identifier);
@@ -54,7 +45,7 @@ class BuiltinPlugin
         array $tags = [],
         $lifeTime = null
     ) {
-        if (!$this->isAllowed()) {
+        if (!$this->accessChecker->isToolbarAccessAllowed()) {
             return;
         }
         $this->cacheService->addCache('save', $identifier);
@@ -66,7 +57,7 @@ class BuiltinPlugin
      */
     public function beforeRemove(PageCache $subject, string $identifier)
     {
-        if (!$this->isAllowed()) {
+        if (!$this->accessChecker->isToolbarAccessAllowed()) {
             return;
         }
         $this->cacheService->addCache('remove', $identifier);

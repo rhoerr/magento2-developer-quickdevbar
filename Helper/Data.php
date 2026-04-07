@@ -42,7 +42,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     private $appState;
     /**
-     * @var Session
+     * @var QdbSession
      */
     private $qdbSession;
 
