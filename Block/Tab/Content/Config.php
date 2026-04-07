@@ -3,6 +3,7 @@
 namespace ADM\QuickDevBar\Block\Tab\Content;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\UrlInterface;
 
 class Config extends \ADM\QuickDevBar\Block\Tab\Panel
 {
@@ -15,11 +16,12 @@ class Config extends \ADM\QuickDevBar\Block\Tab\Panel
         \Magento\Framework\App\Config $appConfig,
         \ADM\QuickDevBar\Helper\Data $qdbHelper,
         \ADM\QuickDevBar\Helper\Register $qdbHelperRegister,
+        UrlInterface $frontUrl,
         array $data = []
     ) {
         $this->_appConfig = $appConfig;
 
-        parent::__construct($context, $qdbHelper, $qdbHelperRegister, $data);
+        parent::__construct($context, $qdbHelper, $qdbHelperRegister, $frontUrl, $data);
     }
 
     public function getTitleBadge()

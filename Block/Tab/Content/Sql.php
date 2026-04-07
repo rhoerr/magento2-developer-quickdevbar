@@ -6,6 +6,7 @@ use ADM\QuickDevBar\Helper\Cookie;
 use ADM\QuickDevBar\Plugin\Zend\DbAdapter;
 use Magento\Framework\DataObjectFactory;
 use Magento\Framework\Stdlib\CookieManagerInterface;
+use Magento\Framework\UrlInterface;
 
 class Sql extends \ADM\QuickDevBar\Block\Tab\Panel
 {
@@ -18,9 +19,10 @@ class Sql extends \ADM\QuickDevBar\Block\Tab\Panel
         \ADM\QuickDevBar\Helper\Register $qdbHelperRegister,
         DataObjectFactory $objectFactory,
         Cookie $cookieHelper,
+        UrlInterface $frontUrl,
         array $data = []
     ) {
-        parent::__construct($context, $qdbHelper, $qdbHelperRegister, $data);
+        parent::__construct($context, $qdbHelper, $qdbHelperRegister, $frontUrl, $data);
         $this->qdbHelperRegister = $qdbHelperRegister;
         $this->objectFactory = $objectFactory;
         $this->cookieHelper = $cookieHelper;
