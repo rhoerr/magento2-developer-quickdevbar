@@ -3,20 +3,20 @@
 namespace ADM\QuickDevBar\Plugin\Zend;
 
 use ADM\QuickDevBar\Helper\Cookie;
-use ADM\QuickDevBar\Helper\Data as QdbHelper;
+use ADM\QuickDevBar\Service\AccessChecker;
 use Zend_Db_Adapter_Abstract;
 
 class DbAdapter
 {
     private Cookie $cookieHelper;
-    private QdbHelper $qdbHelper;
+    private AccessChecker $accessChecker;
 
     public function __construct(
         Cookie $cookieHelper,
-        QdbHelper $qdbHelper
+        AccessChecker $accessChecker
     ) {
         $this->cookieHelper = $cookieHelper;
-        $this->qdbHelper = $qdbHelper;
+        $this->accessChecker = $accessChecker;
     }
 
     /**
@@ -26,8 +26,8 @@ class DbAdapter
      */
     public function beforeSetProfiler(Zend_Db_Adapter_Abstract $subject, $profiler): array
     {
-        if ($this->qdbHelper->isToolbarAccessAllowed()
-            && $this->cookieHelper->isProfilerEnabled()
+        if ($this->cookieHelper->isProfilerEnabled()
+            && $this->accessChecker->isToolbarAccessAllowed()
         ) {
             $profiler = [
                 'enabled' => 1,
