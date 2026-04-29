@@ -92,7 +92,7 @@ abstract class AbstractStatusToolbar extends \Symfony\Component\Console\Command\
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
         $this->resourceConfig->saveConfig('dev/quickdevbar/enable', $this->status);
