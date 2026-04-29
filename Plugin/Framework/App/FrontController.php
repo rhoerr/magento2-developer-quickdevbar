@@ -2,9 +2,9 @@
 
 namespace ADM\QuickDevBar\Plugin\Framework\App;
 
+use ADM\QuickDevBar\Helper\AccessChecker;
 use ADM\QuickDevBar\Helper\Data;
 use ADM\QuickDevBar\Helper\Register;
-use ADM\QuickDevBar\Service\AccessChecker;
 use ADM\QuickDevBar\Service\Dumper;
 use Magento\Framework\App\RequestInterface;
 

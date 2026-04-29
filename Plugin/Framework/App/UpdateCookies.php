@@ -2,8 +2,8 @@
 
 namespace ADM\QuickDevBar\Plugin\Framework\App;
 
+use ADM\QuickDevBar\Helper\AccessChecker;
 use ADM\QuickDevBar\Helper\Cookie;
-use ADM\QuickDevBar\Service\AccessChecker;
 use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
 use Magento\Framework\Stdlib\CookieManagerInterface;
 

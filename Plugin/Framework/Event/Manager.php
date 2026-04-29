@@ -2,7 +2,7 @@
 
 namespace ADM\QuickDevBar\Plugin\Framework\Event;
 
-use ADM\QuickDevBar\Service\AccessChecker;
+use ADM\QuickDevBar\Helper\AccessChecker;
 use ADM\QuickDevBar\Service\Event\Manager as ServiceManager;
 
 class Manager

@@ -41,29 +41,6 @@ class Index extends \Magento\Framework\App\Action\Action
         $this->_layoutFactory = $layoutFactory;
     }
 
-    /**
-     * @param \Magento\Framework\App\RequestInterface $request
-     * @return \Magento\Framework\App\ResponseInterface
-     */
-    public function dispatch(\Magento\Framework\App\RequestInterface $request)
-    {
-        if (!$this->_isAllowed()) {
-            throw new NotFoundException(__('Page not found.'));
-        }
-
-        return parent::dispatch($request);
-    }
-
-    /**
-     * Determine if action is allowed
-     *
-     * @return bool
-     */
-    protected function _isAllowed()
-    {
-        return $this->_qdbHelper->isToolbarAccessAllowed();
-    }
-
     public function execute()
     {
 

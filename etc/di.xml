@@ -12,7 +12,7 @@
     </type>
 
     <type name="Magento\Framework\App\CacheInterface">
-        <plugin name="qdb-trace-cache"
+        <plugin name="qdb-trace-appcache"
                 type="ADM\QuickDevBar\Plugin\Framework\App\Cache" sortOrder="1" />
     </type>
 
@@ -24,7 +24,7 @@
     </type>
 
     <type name="Magento\PageCache\Model\Cache\Type">
-        <plugin name="qdb-trace-cache"
+        <plugin name="qdb-trace-pagecache"
                 type="ADM\QuickDevBar\Plugin\PageCache\FrontController\BuiltinPlugin" sortOrder="1" />
     </type>
 

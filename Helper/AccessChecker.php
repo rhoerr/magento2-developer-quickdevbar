@@ -1,32 +1,48 @@
 <?php
 
-namespace ADM\QuickDevBar\Service;
+namespace ADM\QuickDevBar\Helper;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\State;
 use Magento\Framework\HTTP\Header as HttpHeader;
 use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
+use Magento\Framework\App\MaintenanceMode;
 
 class AccessChecker
 {
     private State $appState;
+
     private ScopeConfigInterface $scopeConfig;
+
     private RemoteAddress $remoteAddress;
+
     private HttpHeader $httpHeader;
 
     private ?bool $isAllowed = null;
+
     private static bool $isResolving = false;
 
+    private MaintenanceMode $maintenanceMode;
+
+    /**
+     * @param State $appState
+     * @param ScopeConfigInterface $scopeConfig
+     * @param RemoteAddress $remoteAddress
+     * @param MaintenanceMode $maintenanceMode
+     * @param HttpHeader $httpHeader
+     */
     public function __construct(
         State $appState,
         ScopeConfigInterface $scopeConfig,
         RemoteAddress $remoteAddress,
+        MaintenanceMode $maintenanceMode,
         HttpHeader $httpHeader
     ) {
         $this->appState = $appState;
         $this->scopeConfig = $scopeConfig;
         $this->remoteAddress = $remoteAddress;
         $this->httpHeader = $httpHeader;
+        $this->maintenanceMode = $maintenanceMode;
     }
 
     public function isToolbarAccessAllowed(bool $testWithRestriction = false): bool
@@ -59,11 +75,12 @@ class AccessChecker
     private function resolve(bool $testWithRestriction): bool
     {
         if ($this->appState->getMode() === State::MODE_PRODUCTION) {
-            return false;
+            if(!$this->maintenanceMode->isOn() || $this->maintenanceMode->isOn($this->remoteAddress->getRemoteAddress())) {
+                return false;
+            }
         }
 
         $enable = $this->getQdbConfig('enable');
-
         if (!$enable && !$testWithRestriction) {
             return false;
         }
@@ -71,11 +88,10 @@ class AccessChecker
         if ($enable > 1 || $testWithRestriction) {
             return $this->isIpAuthorized() || $this->isUserAgentAuthorized();
         }
-
         return true;
     }
 
-    private function isIpAuthorized(): bool
+    public function isIpAuthorized(): bool
     {
         return in_array($this->remoteAddress->getRemoteAddress(), $this->getAllowedIps(), true);
     }
@@ -92,7 +108,7 @@ class AccessChecker
         return array_merge(['127.0.0.1', '::1'], $allowedIps);
     }
 
-    private function isUserAgentAuthorized(): bool
+    public function isUserAgentAuthorized(): bool
     {
         $toolbarHeader = $this->getQdbConfig('toolbar_header');
 
