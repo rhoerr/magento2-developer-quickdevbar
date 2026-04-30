@@ -4,7 +4,8 @@
 namespace ADM\QuickDevBar\Observer;
 
 
-use ADM\QuickDevBar\Helper\Data;
+use ADM\QuickDevBar\Helper\AccessChecker;
+use ADM\QuickDevBar\Helper\Register;
 use Laminas\Http\Headers;
 use Magento\Framework\App\Request\Http as RequestHttp;
 use Magento\Framework\App\Response\Http as ResponseHttp;
@@ -14,17 +15,21 @@ use Magento\Framework\Event\ObserverInterface;
 class ControllerFrontSendResponseBeforeObserver implements ObserverInterface
 {
     /**
-     * @var \ADM\QuickDevBar\Helper\Register
+     * @var Register
      */
     private $qdbHelperRegister;
-    private Data $qdbHelper;
+    
+    /**
+     * @var AccessChecker
+     */
+    private $accessChecker;
 
 
-    public function __construct(\ADM\QuickDevBar\Helper\Register $qdbHelperRegister,
-                                Data $qdbHelper)
+    public function __construct(Register $qdbHelperRegister,
+                                AccessChecker $accessChecker)
     {
         $this->qdbHelperRegister = $qdbHelperRegister;
-        $this->qdbHelper = $qdbHelper;
+        $this->accessChecker = $accessChecker;
     }
 
     /**
@@ -43,7 +48,7 @@ class ControllerFrontSendResponseBeforeObserver implements ObserverInterface
        //TODO: Show $response->getHeaders()
 
         //Remove QDB trace
-        if(!$this->qdbHelper->isToolbarAccessAllowed()) {
+        if(!$this->accessChecker->isToolbarAccessAllowed()) {
             $newContent = preg_replace('/<!-- Start:ADM_QuickDevBar(?s).*End:ADM_QuickDevBar -->/', '', $response->getContent());
             $response->setContent($newContent);
         }

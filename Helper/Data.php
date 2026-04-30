@@ -119,81 +119,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->getQdbConfig('appearance');
     }
 
-    public function isToolbarAccessAllowed($testWithRestriction=false)
-    {
-        if ($this->appState->getMode() === State::MODE_PRODUCTION) {
-            return false;
-        }
-
-        $allow = false;
-        $enable = $this->getQdbConfig('enable');
-
-        if ($enable || $testWithRestriction) {
-
-            if ($enable>1 || $testWithRestriction) {
-                $allow = $this->isIpAuthorized();
-
-                if(!$allow) {
-                    $allow = $this->isUserAgentAuthorized();
-                }
-            } else {
-                $allow = true;
-            }
-        }
-
-        return $allow;
-    }
-
     public function isToolbarAreaAllowed($area)
     {
         $areaEnabled = $this->getQdbConfig('area');
 
         return ($areaEnabled == \Magento\Framework\App\Area::AREA_GLOBAL)
                 || ($area == $areaEnabled);
-    }
-
-
-    public function isIpAuthorized()
-    {
-        if (array_search($this->getClientIp(), $this->getAllowedIps()) !== false) {
-            $allow = true;
-        } else {
-            $allow = false;
-        }
-
-        return $allow;
-    }
-
-    public function getAllowedIps($separator = false)
-    {
-        $allowedIps = $this->getQdbConfig('allow_ips');
-        if($allowedIps) {
-            $allowedIps = preg_split('#\s*,\s*#', $allowedIps, -1, PREG_SPLIT_NO_EMPTY);
-        } else {
-            $allowedIps = [];
-        }
-        $allowedIps = array_merge(["127.0.0.1", "::1"], $allowedIps);
-
-        return $separator ? implode($separator, $allowedIps) : $allowedIps;
-    }
-
-    public function getClientIp()
-    {
-        /*FIX FOR PROXY USERS RETURNING TWO IP ADDRESSES e.g. 127.0.0.1 127.0.0.1*/
-//        return $this->_getRequest()->getClientIp();
-        return $this->_remoteAddress->getRemoteAddress();
-    }
-
-    public function isUserAgentAuthorized()
-    {
-        $toolbarHeader = $this->getQdbConfig('toolbar_header');
-
-        return !empty($toolbarHeader) ? preg_match('/' . preg_quote($toolbarHeader, '/') . '/', $this->getUserAgent()) : false;
-    }
-
-    public function getUserAgent()
-    {
-        return $this->_httpHeader->getHttpUserAgent(true);
     }
 
 

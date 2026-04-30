@@ -18,4 +18,7 @@
     <type name="Magento\Framework\App\Response\Http">
         <plugin name="response-http-page-cache" type="Magento\PageCache\Model\App\Response\HttpPlugin"/>
     </type>-->
+    <type name="ADM\QuickDevBar\Controller\Index">
+        <plugin name="qdb-access-check" type="ADM\QuickDevBar\Plugin\Controller\Index\AccessCheckPlugin"/>
+    </type>
 </config>

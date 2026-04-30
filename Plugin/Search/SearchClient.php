@@ -2,7 +2,7 @@
 
 namespace ADM\QuickDevBar\Plugin\Search;
 
-use ADM\QuickDevBar\Service\AccessChecker;
+use ADM\QuickDevBar\Helper\AccessChecker;
 
 class SearchClient
 {

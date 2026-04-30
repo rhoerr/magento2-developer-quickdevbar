@@ -2,7 +2,7 @@
 
 namespace ADM\QuickDevBar\Plugin\PageCache\FrontController;
 
-use ADM\QuickDevBar\Service\AccessChecker;
+use ADM\QuickDevBar\Helper\AccessChecker;
 use ADM\QuickDevBar\Service\App\Cache as CacheService;
 use Magento\PageCache\Model\Cache\Type as PageCache;
 

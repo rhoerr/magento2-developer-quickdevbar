@@ -2,6 +2,8 @@
 
 namespace ADM\QuickDevBar\Block;
 
+use ADM\QuickDevBar\Helper\AccessChecker;
+use ADM\QuickDevBar\Helper\Data;
 use ADM\QuickDevBar\Block\Tab;
 use Magento\Framework\App\ObjectManager;
 
@@ -10,6 +12,11 @@ class Toolbar extends \Magento\Framework\View\Element\Template
     protected $_mainTabs;
 
     protected $_qdnHelper;
+    
+    /**
+     * @var AccessChecker
+     */
+    protected $accessChecker;
     /**
      * @var \Magento\Framework\Url|mixed
      */
@@ -17,11 +24,13 @@ class Toolbar extends \Magento\Framework\View\Element\Template
 
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
-        \ADM\QuickDevBar\Helper\Data $qdnHelper,
+        Data $qdnHelper,
+        AccessChecker $accessChecker,
         array $data = []
     ) {
 
         $this->_qdnHelper = $qdnHelper;
+        $this->accessChecker = $accessChecker;
 
         parent::__construct($context, $data);
     }
@@ -33,7 +42,7 @@ class Toolbar extends \Magento\Framework\View\Element\Template
      */
     protected function canDisplay()
     {
-        return $this->_qdnHelper->isToolbarAccessAllowed() && $this->_qdnHelper->isToolbarAreaAllowed($this->getArea());
+        return $this->accessChecker->isToolbarAccessAllowed() && $this->_qdnHelper->isToolbarAreaAllowed($this->getArea());
     }
 
     public function getAppearance()
